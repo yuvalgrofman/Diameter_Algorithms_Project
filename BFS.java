@@ -5,9 +5,7 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 public class BFS<V,E> {
     private final Graph<V,E> graph;
     private final V start;
-
     private final V furthest;
-
     private final BreadthFirstIterator<V,E> iterator;
 
 //    private ShortestPathAlgorithm.SingleSourcePaths<V,E> shortestPaths;
@@ -42,6 +40,13 @@ public class BFS<V,E> {
 
     }
 
+    public V getFurthest() {
+        return furthest;
+    }
+
+    public int getDepth(V t) {
+        return iterator.getDepth(t);
+    }
 
     public int getEcc() {
         return iterator.getDepth(furthest);
@@ -52,10 +57,11 @@ public class BFS<V,E> {
         for (int i = 0; i < n; i++) {
             parent = iterator.getParent(parent);
         }
+        return parent;
     }
 
-    public V getMiddleOfEccPath() {
-        return getNthParent(furthest, getEcc() / 2);
+    public V getMid(V t) {
+        return getNthParent(t, getEcc() / 2);
     }
 
 }
