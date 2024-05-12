@@ -4,9 +4,11 @@ public class Highest_Degree implements VertexChooser {
     @Override
     public <V, E> V getInitialNode(Graph<V, E> g) {
         V maxDegreeVertex = null;
+        int maxDegree = 0;
         for (V v : g.vertexSet()) {
-            if (g.degreeOf(v) > g.degreeOf(maxDegreeVertex)) {
+            if (maxDegreeVertex == null || g.degreeOf(v) > maxDegree) {
                 maxDegreeVertex = v;
+                maxDegree = g.degreeOf(v);
             }
         }
         return maxDegreeVertex;
