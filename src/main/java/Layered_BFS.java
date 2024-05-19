@@ -19,10 +19,10 @@ public class Layered_BFS<V,E> {
 
         V current = start;
         while (iterator.hasNext() && iterator.getDepth(current) <= layer_depth) {
-            current = iterator.next();
             if (iterator.getDepth(current) == layer_depth) {
                 temp.add(current);
             }
+            current = iterator.next();
         }
 
         layer = temp;
