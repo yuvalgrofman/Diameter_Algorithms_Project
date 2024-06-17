@@ -43,7 +43,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
             int value;
             try {
                 value = bfs.getDepth(x);
-            } catch (AssertionError assertionError) {
+            } catch (NullPointerException exception) {
                 value = 0;
             }
             sB.put(x, value);
@@ -74,7 +74,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
 
                     try {
                         dist = bfs.getDepth(x);
-                    } catch (AssertionError err) {
+                    } catch (NullPointerException exception) {
                         dist = 0;
                     } finally {
                         int updatedSbVal = dist + sB.get(x);
@@ -106,7 +106,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
 
                     try {
                         dist = bfs.getDepth(x);
-                    } catch (AssertionError err) {
+                    } catch (NullPointerException exception) {
                         dist = 0;
                     } finally {
                         int updatedSfVal = dist + sF.get(x);
