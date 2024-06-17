@@ -12,7 +12,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
 
     @Override
     public Integer run() {
-        return sumSweep().getValue1();
+        return sumSweep().getValue0();
     }
 
 
