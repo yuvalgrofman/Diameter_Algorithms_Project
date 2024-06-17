@@ -77,8 +77,8 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
                     } catch (AssertionError err) {
                         dist = 0;
                     } finally {
-                        int val = dist + sB.get(x);
-                        sB.replace(x, val);
+                        int updatedSbVal = dist + sB.get(x);
+                        sB.replace(x, updatedSbVal);
                     }
                 }
             }
@@ -109,8 +109,8 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
                     } catch (AssertionError err) {
                         dist = 0;
                     } finally {
-                        int val = dist + sF.get(x);
-                        sF.replace(x, val);
+                        int updatedSfVal = dist + sF.get(x);
+                        sF.replace(x, updatedSfVal);
                     }
                 }
             }
