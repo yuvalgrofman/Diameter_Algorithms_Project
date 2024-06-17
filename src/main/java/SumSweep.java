@@ -52,7 +52,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
 
 
         for (int i = 2; i < k; i++) {
-            if (i % 2 == 0) {
+            if (i % 2 == 1) {
                 int max = -1;
                 int current;
                 for (V x : getGraph().vertexSet()) {
@@ -124,11 +124,12 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
                 min = sF.get(x);
                 isFirst = false;
             }
-
-            current = sF.get(x);
-            if (current < min) {
-                min = current;
-                s = x;
+            else {
+                current = sF.get(x);
+                if (current < min) {
+                    min = current;
+                    s = x;
+                }
             }
         }
 
