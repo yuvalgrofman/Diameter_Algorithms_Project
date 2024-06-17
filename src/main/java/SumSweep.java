@@ -9,6 +9,7 @@ import java.util.Set;
 public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
     private V s;
     private int k;
+    private Set<V> vPrime;
 
     @Override
     public Integer run() {
@@ -16,10 +17,11 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
     }
 
 
-    public SumSweep(Graph<V, E> g, V s, int k) {
+    public SumSweep(Graph<V, E> g, V s, int k, Set<V> vPrime) {
         super(g);
         this.s = s;
         this.k = k;
+        this.vPrime = vPrime;
     }
 
 
@@ -116,10 +118,14 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
             }
         }
 
+        if (vPrime == null ||  vPrime.isEmpty()) {
+            return new Pair<>(dL, null);
+        }
+
         int min = 0;
         boolean isFirst = true;
         int current;
-        for (V x : getGraph().vertexSet()) {
+        for (V x : vPrime) {
             if (isFirst) {
                 min = sF.get(x);
                 isFirst = false;
