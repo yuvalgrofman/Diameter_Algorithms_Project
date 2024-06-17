@@ -23,7 +23,7 @@ public class RodittyVirginia<V,E> extends Diameter_Algorithm<V, E> {
         Set<V> hittingSet = new HashSet<>();
 
 
-        int bound = (int) (Integer.MAX_VALUE / (s * Math.log(super.getGraph().vertexSet().size())));
+        int bound = (int) (Integer.MAX_VALUE * (Math.log(super.getGraph().vertexSet().size()) / s));
 
         for (V v : super.getGraph().vertexSet()) {
             Random rand = new Random();
