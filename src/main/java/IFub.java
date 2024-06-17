@@ -1,4 +1,3 @@
-import org.javatuples.Pair;
 import org.jgrapht.Graph;
 
 import java.util.Set;
@@ -6,6 +5,8 @@ import java.util.Set;
 public class IFub<V,E> {
     private final Graph<V,E> g;
     private final VertexChooser chooser;
+    private int numBFS;
+    private int numLayeredBFS;
 
     public IFub(Graph<V, E> g, VertexChooser chooser) {
         this.g = g;
@@ -13,12 +14,15 @@ public class IFub<V,E> {
     }
 
     public Integer run() {
+        numBFS = 0;
+        numLayeredBFS = 0;
         V u = chooser.getInitialNode(g);
         return run(u, 0 , 0);
     }
 
     public Integer run(V u, int l, int k) {
         BFS<V, E> bfs = new BFS<>(g, u);
+        numBFS++;
         int ecc_u = bfs.getEcc();
         int i = ecc_u;
         int lb = Math.max(l, ecc_u);
@@ -45,11 +49,13 @@ public class IFub<V,E> {
      */
     public int getMaxEccOfLayer(V v, int i) {
         Layered_BFS<V, E> bfs = new Layered_BFS<>(g, v, i);
+        numLayeredBFS++;
         Set<V> layer = bfs.getLayer();
 
         int maxEcc = 0;
         for (V vertex : layer) {
             BFS<V, E> bfs2 = new BFS<>(g, vertex);
+            numBFS++;
             int ecc = bfs2.getEcc();
             if (ecc > maxEcc) {
                 maxEcc = ecc;
@@ -57,5 +63,13 @@ public class IFub<V,E> {
         }
 
         return maxEcc;
+    }
+
+    public int getNumBFS() {
+        return numBFS;
+    }
+
+    public int getNumLayeredBFS() {
+        return numLayeredBFS;
     }
 }
