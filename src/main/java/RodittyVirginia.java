@@ -1,4 +1,5 @@
 import org.jgrapht.Graph;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.EdgeReversedGraph;
 
 import java.util.*;
@@ -7,7 +8,7 @@ public class RodittyVirginia<V,E> extends Diameter_Algorithm<V, E> {
     private final int s;
     private int numBFS = 0;
 
-    public RodittyVirginia(Graph<V, E> g, int s) {
+    public RodittyVirginia(AbstractBaseGraph<V, E> g, int s) {
         super(g);
         this.s = s;
     }

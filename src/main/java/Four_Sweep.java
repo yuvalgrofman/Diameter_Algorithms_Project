@@ -1,4 +1,5 @@
 import org.jgrapht.Graph;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.Iterator;
@@ -9,7 +10,7 @@ import org.javatuples.Pair;
 public class Four_Sweep<V,E> extends Diameter_Algorithm<V,E> {
     private final V s;
 
-    public Four_Sweep(Graph<V, E> g, V s) {
+    public Four_Sweep(AbstractBaseGraph<V, E> g, V s) {
         super(g);
         this.s = s;
     }
