@@ -288,7 +288,7 @@ public class ExactSumSweep<V, E> extends Diameter_Algorithm<V,E> {
     }
 
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(it.unimi.dsi.webgraph.algo.SumSweepDirectedDiameterRadius.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ExactSumSweep.class);
 
 
     /**
