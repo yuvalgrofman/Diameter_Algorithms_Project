@@ -24,7 +24,7 @@
  */
 
 
-import StrongConnectivityInspector.StrongConnectivityInspector;
+import StrongConnectivity.StrongConnectivityInspector;
 import it.unimi.dsi.logging.ProgressLogger;
 
 import org.javatuples.Pair;

@@ -1,4 +1,4 @@
-package StrongConnectivityInspector;
+package StrongConnectivity;
 
 import org.javatuples.Pair;
 import org.jgrapht.Graph;
