@@ -37,7 +37,11 @@ import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
+
+import static java.lang.System.exit;
 
 
 public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, IntIntPair> {
@@ -109,7 +113,7 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
     /** The strongly connected components directed graph. */
     private final Graph<Integer, IntIntPair> sccGraph;
     /** The strongly connected components directed graph, with reversed edge. */
-    private final Graph<Integer, IntIntPair> reverseSccGraph;
+    // private final Graph<Integer, IntIntPair> reverseSccGraph;
 
 
     /**
@@ -154,23 +158,24 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
 
         numVertices = graph.vertexSet().size();
 
-        eccF = new ArrayMap<Integer>(numVertices);
-        eccB = new ArrayMap<Integer>(numVertices);
+        final int largestVertex = Collections.max(graph.vertexSet());
+        eccF = new ArrayMap<Integer>(largestVertex + 1);
+        eccB = new ArrayMap<Integer>(largestVertex + 1);
 
 
-        totDistF = new ArrayMap<Integer>(numVertices);
-        totDistB = new ArrayMap<Integer>(numVertices);
+        totDistF = new ArrayMap<Integer>(largestVertex + 1);
+        totDistB = new ArrayMap<Integer>(largestVertex + 1);
 
-        lF = new ArrayMap<Integer>(numVertices);
-        lB = new ArrayMap<Integer>(numVertices);
+        lF = new ArrayMap<Integer>(largestVertex + 1);
+        lB = new ArrayMap<Integer>(largestVertex + 1);
 
-        uF = new ArrayMap<Integer>(numVertices);;
-        uB = new ArrayMap<Integer>(numVertices);;
+        uF = new ArrayMap<Integer>(largestVertex + 1);
+        uB = new ArrayMap<Integer>(largestVertex + 1);
 
-        toCompleteF = new ArrayMap<Boolean>(numVertices);
-        toCompleteB = new ArrayMap<Boolean>(numVertices);
+        toCompleteF = new ArrayMap<Boolean>(largestVertex + 1);
+        toCompleteB = new ArrayMap<Boolean>(largestVertex + 1);
 
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 0; i < largestVertex + 1; i++) {
             eccF.put(i, 0);
             eccB.put(i, 0);
             totDistF.put(i, 0);
@@ -179,13 +184,23 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
             lB.put(i, 0);
             uF.put(i, numVertices + 1);
             uB.put(i, numVertices + 1);
-            toCompleteF.put(i, true);
-            toCompleteB.put(i, true);
+
+            toCompleteF.put(i, false);
+            toCompleteB.put(i, false);
         }
 
+        for (Integer v : getGraph().vertexSet()) {
+            toCompleteF.put(v, true);
+            toCompleteB.put(v, true);
+        }
+        System.out.println("a");
         scc = new StrongConnectivityCondenser<>(graph);
+        System.out.println("a");
+
         sccGraph = scc.condense();
-        reverseSccGraph = new EdgeReversedGraph<>(sccGraph);
+        System.out.println("a");
+
+        //reverseSccGraph = new EdgeReversedGraph<>(sccGraph);
 
 
         this.dL = 0;
@@ -205,8 +220,11 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
         else {
             this.accRadial = accRadial;
         }
+        System.out.println("a");
 
         correspondingEdges = calculateCorrespondingEdges();
+        System.out.println("a");
+
     }
 
 
@@ -229,33 +247,44 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
      *         maximum
      */
     public static int argMax(final double[] vec) {
-        final double EPSILON = 0.001;
+//        final double EPSILON = 0.001;
+//
+//        double max = Double.MIN_VALUE;
+//        int argMax = -1;
+//        int numMax = 0;
+//        for (int i = 0; i < vec.length; i++) {
+//            if (vec[i] >= max + EPSILON) {
+//                argMax = i;
+//                max = vec[i];
+//                numMax = 1;
+//            } else if (Math.abs(vec[i] - max) <= EPSILON) {
+//                numMax++;
+//            }
+//
+//        }
+//        if (numMax > 1) {
+//            int rand = (int) (Math.random() * numMax);
+//            int j = 0, i;
+//            for (i = 0; true; i++) {
+//                if (Math.abs(vec[i] - max) <= EPSILON) {
+//                    j++;
+//                    if (j >= rand) break;
+//                }
+//            }
+//            return i;
+//        }
+//
+//        return argMax;
+
 
         double max = Double.MIN_VALUE;
         int argMax = -1;
-        int numMax = 0;
         for (int i = 0; i < vec.length; i++) {
-            if (vec[i] >= max + EPSILON) {
+            if (vec[i] > max) {
                 argMax = i;
                 max = vec[i];
-                numMax = 1;
-            } else if (Math.abs(vec[i] - max) <= EPSILON) {
-                numMax++;
             }
-
         }
-        if (numMax > 1) {
-            int rand = (int) (Math.random() * numMax);
-            int j = 0, i;
-            for (i = 0; true; i++) {
-                if (Math.abs(vec[i] - max) <= EPSILON) {
-                    j++;
-                    if (j >= rand) break;
-                }
-            }
-            return i;
-        }
-
         return argMax;
     }
 
@@ -504,16 +533,16 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
     /**
      * Uses a heuristic to decide which is the best pivot to choose in each
      * strongly connected component, in order to perform the
-     * {@link #allCCUpperBound(Map)} function.
+     * {@link #allCCUpperBound(ArrayMap)} function.
      *
      * @return a map containing all the strongly connected sub-graphs as keys, and
      * the pivot of each strongly connected sub-graph (key), as the value for that key.
      */
-    private Map<Integer, Integer> findBestPivot() {
+    private ArrayMap<Integer> findBestPivot() {
         final List<Set<Integer>> stronglyConnectedSets = scc.stronglyConnectedSets();
         final int numSCCs = stronglyConnectedSets.size();
 
-        final Map<Integer, Integer> pivots = new HashMap<>(numSCCs);
+        final ArrayMap<Integer> pivots = new ArrayMap<Integer>(numSCCs);
 
         Integer pivot;
         long best, current;
@@ -704,7 +733,7 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
     /**
      * For each edge in the DAG of strongly connected components, finds a
      * corresponding edge in the graph. These edge are used in the
-     * {@link #allCCUpperBound(Map)} function.
+     * {@link #allCCUpperBound(ArrayMap)} function.
      *
      * @return a map that maps between edges in the scc graph, to corresponding edges in the graph.
      * If there are a number of corresponding edges, for a specific edge in the scc graph, then it will pick
@@ -742,57 +771,89 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
      *         map <code><var>pair</var>.getValue1()</code> contains the eccentricity of the pivot of each strongly
      *         connected component.
      */
-    private Pair<Map<Integer, Integer>, Map<Integer, Integer>> computeDistPivot(final Map<Integer, Integer> pivots, final boolean forward) {
+    private Pair<Map<Integer, Integer>, Map<Integer, Integer>> computeDistPivot(final ArrayMap<Integer> pivots, final boolean forward) {
         Graph<Integer, IntIntPair> g;
-        if (forward)
+//        Graph<Integer, IntIntPair> otherSccGraph;
+        if (forward) {
             g = getGraph();
-        else
+//            otherSccGraph = this.reverseSccGraph;
+        } else {
             g = reverseGraph;
+//            otherSccGraph = this.sccGraph;
+        }
 
         Map<Integer, Integer> distFromPivot = new HashMap<>(g.vertexSet().size());
-        Map<Integer, Integer> pivotEcc = new HashMap<>(pivots.size());
+        Map<Integer, Integer> pivotEcc = new ArrayMap<Integer>(pivots.size());
         Map<Integer, Integer> vertexToComponent = scc.vertexToComponentNumber();
         List<Set<Integer>> stronglyConnectedSets = scc.stronglyConnectedSets();
-//        BFS<Integer, IntIntPair> bfs;
-        for (final var entry : pivots.entrySet()) {
-//
-//            bfs = new BFS<>(g, entry.getValue());
-//            pivotEcc.put(stronglyConnectedComponent, bfs.getEcc());
-//            for (Integer v : stronglyConnectedComponent.vertexSet()) {
-//                distFromPivot.put(v, bfs.getDepth(v));
-//            }
 
-            BreadthFirstIterator<Integer, IntIntPair> iterator = new BreadthFirstIterator<>(g, entry.getValue()) {
-                final int stronglyConnectedComponent = entry.getKey();
+
+
+
+//        TopologicalOrderIterator<Integer, IntIntPair> it = new TopologicalOrderIterator<>(otherSccGraph);
+//        List<Integer> sortedPivots = new ArrayList<>(pivots.values().size());
+//        while (it.hasNext()) { // TODO: make sure that the order whe are doing is correct
+//            sortedPivots.add(pivots.get(it.next()));
+//        }
+
+        Object[] pivotsArr = pivots.getArray();
+        Iterable<Integer> sortedPivots;
+        if (forward) {
+            sortedPivots = () -> new Iterator<Integer>() {
+                private int index = pivotsArr.length;
                 @Override
-                protected void encounterVertex(Integer vertex, IntIntPair edge)
-                {
-                    if (edge != null) {
-                        int currentStronglyConnectedComponent = vertexToComponent.get(Graphs.getOppositeVertex(graph, edge, vertex));
-                        if (stronglyConnectedComponent != currentStronglyConnectedComponent) {
-                            return;
-                        }
-                    }
-                    super.encounterVertex(vertex, edge);
+                public boolean hasNext() {
+                    return index > 0;
+                }
+
+                @Override
+                public Integer next() {
+                    index--;
+                    return (Integer)pivotsArr[index];
                 }
             };
+        }
+        else {
+            sortedPivots = () -> new Iterator<Integer>() {
+                private int index = -1;
+                @Override
+                public boolean hasNext() {
+                    return index < pivotsArr.length - 1;
+                }
 
-            while (iterator.hasNext()) iterator.next();
-
-            //            BreadthFirstIterator<Integer, IntIntPair> iterator = new BreadthFirstIterator<Integer, IntIntPair, new Iterator<>() {
-            //                @Override
-            //                public boolean hasNext() {
-            //                    return false;
-            //                }
-            //
-            //                @Override
-            //                public Object next() {
-            //                    return null;
-            //                }
-            //            } >();
+                @Override
+                public Integer next() {
+                    index++;
+                    return (Integer)pivotsArr[index];
+                }
+            };
+        }
 
 
-            final int stronglyConnectedSetIndex = entry.getKey();
+
+        BreadthFirstIterator<Integer, IntIntPair> iterator = new BreadthFirstIterator<Integer, IntIntPair>(g, sortedPivots) {
+            private int currentPivotComponent;
+
+            @Override
+            protected void encounterVertex(Integer vertex, IntIntPair edge)
+            {
+                if (edge == null) {
+                    currentPivotComponent = vertexToComponent.get(vertex);
+                }
+                else {
+                    int currentVertexComponent = vertexToComponent.get(Graphs.getOppositeVertex(graph, edge, vertex));
+                    if (currentVertexComponent != currentPivotComponent) {
+                        System.err.println("f");
+                        exit(1);
+                    }
+                }
+                super.encounterVertex(vertex, edge);
+            }
+        };
+
+        while (iterator.hasNext()) iterator.next();
+
+        for (final var stronglyConnectedSetIndex : pivots.keySet()) {
             int maxDepth = -1, currentDepth;
             for (Integer v : stronglyConnectedSets.get(stronglyConnectedSetIndex)) {
                 currentDepth = iterator.getDepth(v);
@@ -800,8 +861,46 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
                 if (currentDepth > maxDepth) maxDepth = currentDepth;
             }
             pivotEcc.put(stronglyConnectedSetIndex, maxDepth);
-
         }
+
+
+
+
+//        for (final var entry : pivots.entrySet()) {
+////
+////            bfs = new BFS<>(g, entry.getValue());
+////            pivotEcc.put(stronglyConnectedComponent, bfs.getEcc());
+////            for (Integer v : stronglyConnectedComponent.vertexSet()) {
+////                distFromPivot.put(v, bfs.getDepth(v));
+////            }
+//
+//            BreadthFirstIterator<Integer, IntIntPair> iterator = new BreadthFirstIterator<>(g, entry.getValue()) {
+//                final int stronglyConnectedComponent = entry.getKey();
+//                @Override
+//                protected void encounterVertex(Integer vertex, IntIntPair edge)
+//                {
+//                    if (edge != null) {
+//                        int currentStronglyConnectedComponent = vertexToComponent.get(Graphs.getOppositeVertex(graph, edge, vertex));
+//                        if (stronglyConnectedComponent != currentStronglyConnectedComponent) {
+//                            return;
+//                        }
+//                    }
+//                    super.encounterVertex(vertex, edge);
+//                }
+//            };
+//
+//            while (iterator.hasNext()) iterator.next();
+//
+//
+//            final int stronglyConnectedSetIndex = entry.getKey();
+//            int maxDepth = -1, currentDepth;
+//            for (Integer v : stronglyConnectedSets.get(stronglyConnectedSetIndex)) {
+//                currentDepth = iterator.getDepth(v);
+//                distFromPivot.put(v, currentDepth);
+//                if (currentDepth > maxDepth) maxDepth = currentDepth;
+//            }
+//            pivotEcc.put(stronglyConnectedSetIndex, maxDepth);
+//        }
         return new Pair<>(distFromPivot, pivotEcc);
     }
 
@@ -816,10 +915,11 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
         int currentScc, endScc;
         int currentVal, uFVal;
 
-        TopologicalOrderIterator<Integer, IntIntPair> it = new TopologicalOrderIterator<>(reverseSccGraph);
-
-        while (it.hasNext()) { // TODO: make sure that the order whe are doing is correct
-            currentScc = it.next();
+//        TopologicalOrderIterator<Integer, IntIntPair> it = new TopologicalOrderIterator<>(reverseSccGraph);
+//
+//        while (it.hasNext()) { // TODO: make sure that the order whe are doing is correct
+//            currentScc = it.next();
+        for (currentScc = pivots.size() - 1; currentScc >= 0; currentScc--){
             currentPivot = pivots.get(currentScc);
 
             currentVal = eccPivotF.get(currentScc);
@@ -860,10 +960,12 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
         int currentScc, endScc;
         int currentVal, uBVal;
 
-        TopologicalOrderIterator<Integer, IntIntPair> it = new TopologicalOrderIterator<>(sccGraph);
-
-        while (it.hasNext()) { // TODO: make sure that the order whe are doing is correct
-            currentScc = it.next();
+//        TopologicalOrderIterator<Integer, IntIntPair> it = new TopologicalOrderIterator<>(sccGraph);
+//
+//        while (it.hasNext()) { // TODO: make sure that the order whe are doing is correct
+//            currentScc = it.next();
+        final int numPivots = pivots.size();
+        for (currentScc = 0; currentScc < numPivots; currentScc++){
             currentPivot = pivots.get(currentScc);
 
             currentVal = eccPivotB.get(currentScc);
@@ -893,12 +995,12 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
 
     /**
      * Performs a step of the ExactSumSweep algorithm, by performing the
-     * {@link #allCCUpperBound(Map)} function (see the paper for more details).
+     * {@link #allCCUpperBound(ArrayMap)} function (see the paper for more details).
      *
      * @param pivots
      *            a map between the strongly connected components, and their pivots
      */
-    private void allCCUpperBound(final Map<Integer, Integer> pivots) {
+    private void allCCUpperBound(final ArrayMap<Integer> pivots) {
         final var distEccForward = computeDistPivot(pivots, true);
         final Map<Integer, Integer> distPivotF = distEccForward.getValue0();
         Map<Integer, Integer> eccPivotF = distEccForward.getValue1();

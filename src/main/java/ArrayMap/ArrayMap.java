@@ -7,6 +7,10 @@ import java.util.*;
 public class ArrayMap<V> extends AbstractMap<Integer, V> {
     private final V[] array;
 
+    public V[] getArray() {
+        return array;
+    }
+
     @SuppressWarnings("unchecked")
     public ArrayMap(int size) {
         array = (V[]) new Object[size];
