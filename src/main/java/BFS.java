@@ -48,25 +48,3 @@ public class BFS<V,E> {
         return getNthParent(t, getEcc() / 2);
     }
 }
-
-
-// Optional Secondary Implementation:
-
-//    private ShortestPathAlgorithm.SingleSourcePaths<V,E> shortestPaths;
-
-//    BFS(Graph<V,E> graph, V start) {
-//        shortestPaths = new BFSShortestPath<>(graph).getPaths(start);
-//
-//        double CurrentFurthestDepth = 0.0;
-//        V currentFurthest = start;
-//        double currentDepth;
-//        for (V v : graph.vertexSet()) {
-//            currentDepth = shortestPaths.getWeight(v);
-//            if (currentDepth > CurrentFurthestDepth) {
-//                CurrentFurthestDepth = currentDepth;
-//                currentFurthest = v;
-//            }
-//        }
-//
-//        this.furthest = currentFurthest;
-//    }
