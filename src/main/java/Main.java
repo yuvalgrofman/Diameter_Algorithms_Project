@@ -65,6 +65,5 @@ class Main {
 
 //        SumSweepDirectedDiameterRadius s = new SumSweepDirectedDiameterRadius(immutableGraph, SumSweepDirectedDiameterRadius.OutputLevel.RADIUS_DIAMETER, null, new ProgressLogger());
 //        s.compute();
-
     }
 }
