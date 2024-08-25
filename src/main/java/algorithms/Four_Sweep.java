@@ -1,10 +1,8 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.AbstractBaseGraph;
-import org.jgrapht.graph.DefaultEdge;
 
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
 import org.javatuples.Pair;
 
 public class Four_Sweep<V,E> extends Diameter_Algorithm<V,E> {

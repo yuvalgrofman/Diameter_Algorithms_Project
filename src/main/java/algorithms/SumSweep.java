@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.javatuples.Pair;
 import org.jgrapht.graph.AbstractBaseGraph;

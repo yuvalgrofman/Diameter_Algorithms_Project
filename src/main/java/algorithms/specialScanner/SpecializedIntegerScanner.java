@@ -1,6 +1,4 @@
-package specialScanner;
-
-import java.util.Scanner;
+package algorithms.specialScanner;
 
 public class SpecializedIntegerScanner extends SpecializedScanner<Integer>{
 //    public SpecializedIntegerScanner(Scanner s) {

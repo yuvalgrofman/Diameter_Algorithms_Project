@@ -1,4 +1,4 @@
-package StrongConnectivity;
+package algorithms.StrongConnectivity;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import it.unimi.dsi.fastutil.ints.IntIntPair;

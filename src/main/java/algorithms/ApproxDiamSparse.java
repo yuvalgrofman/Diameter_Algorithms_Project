@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.EdgeReversedGraph;

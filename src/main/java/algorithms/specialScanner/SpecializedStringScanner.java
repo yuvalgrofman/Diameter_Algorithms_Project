@@ -1,6 +1,4 @@
-package specialScanner;
-
-import java.util.Scanner;
+package algorithms.specialScanner;
 
 public class SpecializedStringScanner extends SpecializedScanner<String>{
 //    public SpecializedStringScanner(Scanner s) {

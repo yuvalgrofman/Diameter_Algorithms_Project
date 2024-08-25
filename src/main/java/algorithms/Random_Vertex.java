@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 
 import java.util.Iterator;

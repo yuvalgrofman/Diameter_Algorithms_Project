@@ -1,9 +1,9 @@
-package graphParsers;
+package algorithms.graphParsers;
 
 import org.jgrapht.Graph;
 
 import org.jgrapht.graph.builder.GraphBuilder;
-import specialScanner.SpecializedScanner;
+import algorithms.specialScanner.SpecializedScanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;

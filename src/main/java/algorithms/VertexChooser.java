@@ -1,4 +1,5 @@
-import org.javatuples.Pair;
+package algorithms;
+
 import org.jgrapht.Graph;
 
 public interface VertexChooser {

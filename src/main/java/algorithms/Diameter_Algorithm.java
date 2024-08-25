@@ -1,4 +1,5 @@
-import org.jgrapht.Graph;
+package algorithms;
+
 import org.jgrapht.graph.AbstractBaseGraph;
 
 public abstract class Diameter_Algorithm<V,E> {

@@ -1,4 +1,4 @@
-package graphWrappers;
+package algorithms.graphWrappers;
 
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 import org.jgrapht.GraphType;
