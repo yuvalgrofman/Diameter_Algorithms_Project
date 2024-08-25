@@ -31,6 +31,7 @@ import it.unimi.dsi.logging.ProgressLogger;
 import org.javatuples.Pair;
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.EdgeReversedGraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;
@@ -150,7 +151,7 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
      *            that are in the biggest strongly connected component, or that
      *            are able to reach the biggest strongly connected component.
      */
-    public ExactSumSweepForIntegerGraphs(Graph<Integer, IntIntPair> graph, ProgressLogger pl, OutputLevel output , Set<Integer> accRadial) {
+    public ExactSumSweepForIntegerGraphs(AbstractBaseGraph<Integer, IntIntPair> graph, ProgressLogger pl, OutputLevel output , Set<Integer> accRadial) {
         super(graph);
         this.reverseGraph = new EdgeReversedGraph<>(graph);
 

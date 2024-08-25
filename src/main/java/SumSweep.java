@@ -1,5 +1,6 @@
 import org.jgrapht.Graph;
 import org.javatuples.Pair;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.EdgeReversedGraph;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
     }
 
 
-    public SumSweep(Graph<V, E> g, V s, int k, Set<V> vPrime) {
+    public SumSweep(AbstractBaseGraph<V, E> g, V s, int k, Set<V> vPrime) {
         super(g);
         this.s = s;
         this.k = k;
