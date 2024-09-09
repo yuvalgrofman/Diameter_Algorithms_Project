@@ -1,16 +1,14 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.AbstractBaseGraph;
-import org.jgrapht.graph.DefaultEdge;
 
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
 import org.javatuples.Pair;
 
 public class Four_Sweep<V,E> extends Diameter_Algorithm<V,E> {
     private final V s;
 
-    public Four_Sweep(AbstractBaseGraph<V, E> g, V s) {
+    public Four_Sweep(Graph<V, E> g, V s) {
         super(g);
         this.s = s;
     }
@@ -30,7 +28,7 @@ public class Four_Sweep<V,E> extends Diameter_Algorithm<V,E> {
         V r2 = bfs2.getMid(b1);
         int ecc_a1 = bfs2.getDepth(b1);
 
-        BFS<V, E> bfs3 = new BFS<>(g, b1);
+        BFS<V, E> bfs3 = new BFS<>(g, r2);
         V a2 = bfs3.getFurthest();
 
         BFS<V, E> bfs4 = new BFS<>(g, a2);
@@ -38,7 +36,7 @@ public class Four_Sweep<V,E> extends Diameter_Algorithm<V,E> {
         V r1 = bfs4.getMid(b2);
         int ecc_a2 = bfs4.getDepth(b2);
 
-        return new Pair<V, Integer>(r1, Math.max(ecc_a1, ecc_a2));
+        return new Pair<>(r1, Math.max(ecc_a1, ecc_a2));
 
     }
 }

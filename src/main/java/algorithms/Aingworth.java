@@ -18,13 +18,13 @@
 //    public Integer run() {
 //        Graph<V,E> reverse = new EdgeReversedGraph<>(super.getGraph());
 //
-//        NeighborsBFS<V,E>[] arr = new NeighborsBFS[super.getGraph().vertexSet().size()];
-//        Map<V, NeighborsBFS<V,E>> map = new HashMap<>();
+//        algorithms.NeighborsBFS<V,E>[] arr = new algorithms.NeighborsBFS[super.getGraph().vertexSet().size()];
+//        Map<V, algorithms.NeighborsBFS<V,E>> map = new HashMap<>();
 //        V w = null;
 //        int depth = 0;
 //        int maxEcc = 0;
 //        for (V v : super.getGraph().vertexSet()) {
-//            map.put(v, new NeighborsBFS<>(super.getGraph(), v, s));
+//            map.put(v, new algorithms.NeighborsBFS<>(super.getGraph(), v, s));
 //            if (map.get(v).getDepth() > depth) {
 //                depth = map.get(v).getDepth();
 //                w = v;

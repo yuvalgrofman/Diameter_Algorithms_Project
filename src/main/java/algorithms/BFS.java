@@ -1,8 +1,8 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 
 import org.jgrapht.traverse.BreadthFirstIterator;
-
-import java.util.Set;
 
 public class BFS<V,E> {
     private final Graph<V,E> graph;

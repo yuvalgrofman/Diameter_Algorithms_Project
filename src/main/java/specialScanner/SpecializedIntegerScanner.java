@@ -1,7 +1,5 @@
 package specialScanner;
 
-import java.util.Scanner;
-
 public class SpecializedIntegerScanner extends SpecializedScanner<Integer>{
 //    public SpecializedIntegerScanner(Scanner s) {
 //        super(s);

@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 
 public class Highest_Degree implements VertexChooser {

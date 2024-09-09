@@ -1,4 +1,4 @@
-package ArrayMap;
+package algorithms.ArrayMap;
 
 import org.jgrapht.graph.DefaultEdge;
 

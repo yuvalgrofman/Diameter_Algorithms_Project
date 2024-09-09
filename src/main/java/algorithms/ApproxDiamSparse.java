@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.EdgeReversedGraph;
@@ -8,10 +10,12 @@ import java.util.*;
 public class ApproxDiamSparse<V,E> extends Diameter_Algorithm<V, E> {
     private int h;
     private int numBFS = 0;
+    private AbstractBaseGraph<V, E> g;
 
     public ApproxDiamSparse(AbstractBaseGraph<V, E> g, int h) {
         super(g);
         this.h = h;
+        this.g = g;
     }
 
     public Integer run(int minDegree) {
@@ -34,7 +38,7 @@ public class ApproxDiamSparse<V,E> extends Diameter_Algorithm<V, E> {
         }
 
         // Create a new graph to find vertex furthest from minimum degree set
-        Graph <V,E> extendedGraph = new EdgeReversedGraph<V,E>((AbstractBaseGraph<V,E>) super.getGraph().clone());
+        Graph <V,E> extendedGraph = new EdgeReversedGraph<V,E>((AbstractBaseGraph<V,E>) g.clone());
         V r = (V) new Integer(121891731);
         extendedGraph.addVertex(r);
         for (V u : H) {

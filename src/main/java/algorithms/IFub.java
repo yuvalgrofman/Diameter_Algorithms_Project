@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 
 import java.util.Set;
@@ -29,6 +31,7 @@ public class IFub<V,E> {
         int ub = 2 * ecc_u;
 
         while (ub - lb > k) {
+            System.out.println("ub - lb = " + ub + " - " + lb + " = " + (ub - lb));
             int bi_u = getMaxEccOfLayer(u, i);
             if (Math.max(lb, bi_u) > 2 * (i - 1)) {
                 return Math.max(lb, bi_u);
@@ -52,10 +55,23 @@ public class IFub<V,E> {
         numLayeredBFS++;
         Set<V> layer = bfs.getLayer();
 
+        long start, timeElapsed, millisElapsed;
+        double seccondsElapsed;
+        int layerSize = layer.size(), count = 1;
+
         int maxEcc = 0;
         for (V vertex : layer) {
+            start = System.nanoTime();
+
             BFS<V, E> bfs2 = new BFS<>(g, vertex);
             numBFS++;
+
+            timeElapsed = System.nanoTime() - start;
+            millisElapsed = timeElapsed / 1_000_000;
+            seccondsElapsed = ((double)millisElapsed) / 1_000;
+            System.out.println("finished " + count++ + " / " + layerSize + " from current layer in " + seccondsElapsed + " seconds");
+
+
             int ecc = bfs2.getEcc();
             if (ecc > maxEcc) {
                 maxEcc = ecc;

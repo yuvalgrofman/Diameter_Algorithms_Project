@@ -1,3 +1,5 @@
+package algorithms;
+
 import org.jgrapht.Graph;
 import org.javatuples.Pair;
 import org.jgrapht.graph.AbstractBaseGraph;
@@ -18,7 +20,7 @@ public class SumSweep<V,E> extends Diameter_Algorithm<V,E> {
     }
 
 
-    public SumSweep(AbstractBaseGraph<V, E> g, V s, int k, Set<V> vPrime) {
+    public SumSweep(Graph<V, E> g, V s, int k, Set<V> vPrime) {
         super(g);
         this.s = s;
         this.k = k;
