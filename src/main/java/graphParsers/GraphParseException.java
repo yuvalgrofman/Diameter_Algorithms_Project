@@ -1,4 +1,4 @@
-package algorithms.graphParsers;
+package graphParsers;
 
 public class GraphParseException extends RuntimeException {
     public GraphParseException(String s) {

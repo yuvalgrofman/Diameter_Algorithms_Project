@@ -22,7 +22,7 @@ public class NeighborsBFS<V,E> {
             Set<V> temp = new HashSet<>();
 
             V current = start;
-            for (int i = 0; i < numNeighbors; i++) {
+            for (int i = 0; i < numNeighbors && iterator.hasNext(); i++) {
                 current = iterator.next();
                 temp.add(current);
             }

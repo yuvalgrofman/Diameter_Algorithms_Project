@@ -39,7 +39,7 @@ public class TwoApproxEcc<V,E> extends Diameter_Algorithm<V,E> {
         }
 
         // Find the vertex furthest from the hitting set using dijkstra's algorithm
-        Graph<V,E> extendedGraph = (Graph<V, E>) super.getGraph().clone();
+        Graph<V,E> extendedGraph = (Graph<V, E>) ((AbstractBaseGraph<V, E>) super.getGraph()).clone();
         V r = (V) new Integer(121891731);
         extendedGraph.addVertex(r);
         for (V u : hittingSet) {

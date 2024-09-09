@@ -1,4 +1,4 @@
-package algorithms;/*
+/*
  * This software includes modifications based on code originally written by Sebastiano Vigna,
  * licensed under the terms of the GNU Lesser General Public License v2.1 or later,
  * or the Apache Software License 2.0.
@@ -23,6 +23,7 @@ package algorithms;/*
  * Modifications made by Jonathan Moiseyev (C) 2024
  */
 
+package algorithms;
 
 import algorithms.ArrayMap.ArrayMap;
 import algorithms.StrongConnectivity.StrongConnectivityCondenser;
@@ -149,7 +150,7 @@ public class ExactSumSweepForIntegerGraphs extends Diameter_Algorithm<Integer, I
      *            that are in the biggest strongly connected component, or that
      *            are able to reach the biggest strongly connected component.
      */
-    public ExactSumSweepForIntegerGraphs(AbstractBaseGraph<Integer, IntIntPair> graph, ProgressLogger pl, OutputLevel output , Set<Integer> accRadial) {
+    public ExactSumSweepForIntegerGraphs(Graph<Integer, IntIntPair> graph, ProgressLogger pl, OutputLevel output , Set<Integer> accRadial) {
         super(graph);
         this.reverseGraph = new EdgeReversedGraph<>(graph);
 

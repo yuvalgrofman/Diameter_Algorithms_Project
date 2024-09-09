@@ -1,31 +1,39 @@
-package algorithms;
+package algorithmsForWebGraphs;
 
+import algorithms.BFS;
+import algorithms.Layered_BFS;
+import algorithms.VertexChooser;
+import it.unimi.dsi.fastutil.ints.IntIntSortedPair;
+import it.unimi.dsi.webgraph.ImmutableGraph;
 import org.jgrapht.Graph;
+import org.jgrapht.webgraph.ImmutableDirectedGraphAdapter;
+import org.jgrapht.webgraph.ImmutableUndirectedGraphAdapter;
 
 import java.util.Set;
 
-public class IFub<V,E> {
-    private final Graph<V,E> g;
+public class IFubForWebGraphs {
+    private final ImmutableGraph g;
     private final VertexChooser chooser;
     private int numBFS;
     private int numLayeredBFS;
+    private final ImmutableUndirectedGraphAdapter adapter;
 
-    public IFub(Graph<V, E> g, VertexChooser chooser) {
+    public IFubForWebGraphs(ImmutableGraph g, VertexChooser chooser) {
         this.g = g;
         this.chooser = chooser;
+        adapter = new ImmutableUndirectedGraphAdapter(this.g);
     }
 
     public Integer run() {
         numBFS = 0;
         numLayeredBFS = 0;
-        V u = chooser.getInitialNode(g);
+        Integer u = chooser.getInitialNode(adapter);
         return run(u, 0 , 0);
     }
 
-    public Integer run(V u, int l, int k) {
-        BFS<V, E> bfs = new BFS<>(g, u);
+    public Integer run(Integer u, int l, int k) {
+        int ecc_u = WebGraphBFS.calculateEccentricity(g, u);
         numBFS++;
-        int ecc_u = bfs.getEcc();
         int i = ecc_u;
         int lb = Math.max(l, ecc_u);
         int ub = 2 * ecc_u;
@@ -50,20 +58,20 @@ public class IFub<V,E> {
      * @param v vertex
      * @return the maximum eccentricity of the vertices in F_i
      */
-    public int getMaxEccOfLayer(V v, int i) {
-        Layered_BFS<V, E> bfs = new Layered_BFS<>(g, v, i);
+    public int getMaxEccOfLayer(Integer v, int i) {
+        Layered_BFS<Integer, IntIntSortedPair> bfs = new Layered_BFS<>(adapter, v, i);
         numLayeredBFS++;
-        Set<V> layer = bfs.getLayer();
+        Set<Integer> layer = bfs.getLayer();
 
         long start, timeElapsed, millisElapsed;
         double seccondsElapsed;
         int layerSize = layer.size(), count = 1;
 
         int maxEcc = 0;
-        for (V vertex : layer) {
+        for (Integer vertex : layer) {
             start = System.nanoTime();
 
-            BFS<V, E> bfs2 = new BFS<>(g, vertex);
+            int ecc = WebGraphBFS.calculateEccentricity(g, vertex);
             numBFS++;
 
             timeElapsed = System.nanoTime() - start;
@@ -72,7 +80,6 @@ public class IFub<V,E> {
             System.out.println("finished " + count++ + " / " + layerSize + " from current layer in " + seccondsElapsed + " seconds");
 
 
-            int ecc = bfs2.getEcc();
             if (ecc > maxEcc) {
                 maxEcc = ecc;
             }
